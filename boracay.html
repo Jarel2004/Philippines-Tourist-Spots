@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boracay Island</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin:0;
+            padding:0;
+            background: #f4f6f8;
+            color: black;
+        }
+        header{
+            width:100%;
+            background: rgb(255,255,255);
+            color: blue;
+            box-shadow: 0px 0px 3px gray;
+            padding: 1rem;
+            position:fixed;
+            top:0;
+            z-index:100;
+            text-align:left;
+        }
+        .menu{
+            position:fixed;
+            display:flex;
+            top:10px;
+            right:20px;
+            z-index:100;
+        }
+        header h1{
+            margin:0;
+            font-size:1.8rem;
+        }
+        h2{
+            text-align: center;
+            color:#007bff;
+            margin-top: 2rem;
+            font-size:1.8rem;
+        }
+        section{
+            width:85%;
+            margin: 2rem auto;
+            background: #fff;
+            border-radius: 10px;
+            padding:2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+        }
+        .main-image {
+            display: flex;
+            justify-content:center;
+            margin: 1rem 0;
+        }
+        .main-image img{
+            width:100%;
+            max-width: 800px;
+            border-radius:10px;
+            height:auto;
+        }
+        .destination-info h3{
+            color: #007bff;
+            margin-top:1rem;
+            text-transform:uppercase;
+
+        }
+        .destination-info p, .destination-info ul{
+            line-height:1.6;
+            text-align:justify;
+            font-size: 1rem;
+        }
+        ul{
+            padding-left:1.2rem;
+        }
+        .food-gallery{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:1.5rem;
+            margin-top:1rem;
+        }
+        .food-item{
+            background:#fdfdfd;
+            border:1px solid #eee;
+            border-radius:10px;
+            padding:1rem;
+            text-align:center;
+            transition:transform 0.3s, box-shadow 0.3s;
+        }
+        .food-item:hover{
+            transform:translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .food-item img{
+            width:100%
+            border-radius: 10px;
+            height: 150px;
+            object-fit:cover;
+        }
+        .food-item h4{
+            color: #007bff;
+            margin: 0.8rem 0 0.4rem;
+        }
+        .food-item p{
+            color:#555;
+            font-size:0.95rem;
+        }
+        a.hotel-link{
+            display:inline-block;
+            margin-top: 0.3rem;
+            color:#007bff;
+            text-decoration:none;
+            font-weight:bold;
+        }
+        a.hotel-link:hover{
+            text-decoration:underline;
+        }
+        @media(max-width:768px){
+            section{
+                width:90%;
+                padding:1.5rem;
+            }
+            h2{
+                font-size:1.5rem;
+            }
+            .food-item img{
+                height:120px;
+            }
+            header h1{
+                font-size:1.4rem;
+            }
+        }
+        @media(max-width:4880px){
+            .food-item{
+                padding:0.8rem;
+            }
+            .food-item h4{
+                font-size:1rem;
+            }
+            .food-item p{
+                font-size:0.9rem;
+            }
+        }
+        #menu-toggle{
+            display:none;
+        }
+        .hamburger{
+            position:absolute;
+            top:20px;
+            right:20px;
+            width:30px;
+            height:20px;
+            display:flex;
+            flex-direction:column;
+            justify-content:space-between;
+            cursor:pointer;
+            z-index:1000;
+    
+            
+        }
+        .hamburger span{
+            display:block;
+            width:100%;
+            height:3px;
+            background-color:black;
+            transition: all 0.3s ease;
+        }
+        #menu-toggle:checked + .hamburger span:nth-child(1){
+            transform:rotate(45deg) translate(5px,5px);
+        }
+        #menu-toggle:checked + .hamburger span:nth-child(2){
+            opacity: 0; 
+        }
+        #menu-toggle:checked + .hamburger span:nth-child(3){
+            transform:rotate(-45deg) translate(5px,-5px);
+        }
+        .nav-list{
+            position:fixed;
+            top:0;
+            right:0;
+            width:35vw;
+            height:100vh;
+            background-color:#f0f0f0;
+            transform:translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y:auto;
+            z-index:999;
+
+        }
+        #menu-toggle:checked ~ .nav-list{
+            transform:translateX(0);
+        }
+        .nav-list ul{
+            list-style:none;
+            padding:20px;
+            margin:0;
+        }
+        .nav-list ul li{
+            margin-bottom:15px;
+        }
+        .nav-list ul li a{
+            text-decoration:none;
+            color:black;
+            font-size:18px;
+        }
+        .transport-gallery{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:1.5rem;
+            margin-top: 1rem;
+            text-align:center;
+        
+        }
+        .transport-item{
+            background:#fff;
+            border-radius:10px;
+            padding:1rem;
+            box-shadow: 0 3px 10px rgba (0,0,0,0.1);
+            transition:transform 0.3s;
+        }
+        .transport-item:hover{
+            transform:translateX(-5px);
+        }
+        .transport-item img{
+            width:100%;
+            height:300px;
+            object-fit:cover;
+            border-radius:10px;
+        }
+        .transport-item h4{
+            color:#007bff;
+            margin:0.8rem 0 0.4rem;
+
+        }
+        .transport-item p{
+            color:#555;
+            font-size:0.95rem;
+        }
+        header h1:hover{
+            color:#0088cc;
+            transition:0.3s;
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>
+            <a href ="index.html" style ="text-decoration: none; color:inherit;">Boracay Island
+                <i class ="fa-solid fa-earth-asia"></i>Philippines
+            </a>
+        </h1>
+    </header>
+    <div class ="menu">
+        <input type = "checkbox" id="menu-toggle">
+        <label for ="menu-toggle" class ="hamburger">
+            <span></span> 
+            <span></span>
+            <span></span>
+           
+        </label>
+        <div class ="nav-list">
+            <ul>
+                <li><a href="#About">Overview</a></li>
+                <li><a href="#Transportation">Transportation</a></li>
+                <li><a href="#activities">Things to Do</a></li>
+                <li><a href="#tourism">Tourism and Development</a></li>
+                <li><a href="#culture">Culture</a></li>
+                <li><a href="#climate">Climate</a></li>
+                <li><a href="#food">Food and Cuisine</a></li>
+                <li><a href="#stay">Where to Stay</a></li>
+            </ul>
+        </div>
+    </div>
+    <main>
+        <section id ="About">
+            <h2><i class ="fa-solid fa-map-location-dot"></i>Boracay Island</h2>
+            <div class ="main-image">
+                <img src="src/boracay.jpg" alt="Boracay Beach">
+            </div>
+            <div class = "destination-info">
+                <h3>About Boracay</h3>
+                <p>
+                    Boracay is a place that looks straight out of a commercial( whether the one with chocolate bars or deodorants,it's up to you).Both of these settings have an idyllic background in commom,with blue,green and white colors so pure that the nature does'nt feel real.All we know is that in order to get the most out of your trip to the island, you should remember: The best time to visit Boracay is during its dry season from late November to early May.
+                </p>
+                <h3>Fun Facts</h3>
+                <ul>
+                    <li>Boracay's White beach is about 4 kilometers long</li>
+                    <li>It was ranked among the best islands in the world.</li>
+                    <li>The island was closed in 2018 for 6 months for environmental rehabilitation.</li>
+                </ul>
+            </div>
+        </section>
+        <section id ="Transportation">
+            <h2><i class ="fa-solid fa-bus"></i>Transportation</h2>
+            <div class="transport-gallery">
+                <div class="transport-item">    
+                    <img src ="src/ebike.jpg" alt="E-bike">
+                    <h4>E-Bike</h4>
+                    <p>Eco-friendly and quiet, e-bikes are common way to explore Boracay's narrow roads.</p>
+                </div>
+
+               <div class="transport-item">
+                <img src="src/tri.png" alt="Tricycle">
+                <h4> Tricycle</h4>
+                <p>The most popular mode of transportation on the island, perfect for short rides between beaches.</p>
+               </div>
+            </div>
+            <ul>
+                <li><b>By Air:</b> Fly from Manila or Cebu to either Caticlan or Kalibo Airport.</li>
+                <li><b>From Caticlan:</b> Take a short tricycle ride to the jetty port, then ride a boat to Boracay.</li>
+                <li><b>Local Transport:</b> On the island, you can get around by tricycle, e-bike or by walking along the beach path.</li>
+            </ul>
+        </section>
+        <section id ="tourism">
+            <h2><i class ="fa-solid fa-bus"></i>Tourism and Development</h2>
+            <ul>
+                <p>Boracay was temporarily closed for rehabilitation in 2018 because of the environmental issues such as pollution and overcrowding. After a six-month closure, the island reopened with stricter environmental regulations, including:</p>
+                <li>Limiting the number of tourists allowed on the island.</li>
+                <li>Implementing a strict no-smoking policy on the beach.</li>
+                <li>Rehabilitating the beach and surrounding areas to restore their natural beauty.</li>
+            
+            </ul>
+        </section>
+           <section id ="culture">
+            <h2><i class ="fa-solid fa-users"></i>Culture</h2>
+            <ul>
+                <li>Locals are called Aklanon (from the province of Aklan).</li>
+                <li>The local language is Aklanon, but Tagalog and English are widely spoken.</li>
+                <li>The people are known for being friendly and hospitable,expecially to tourists.</li>
+            </ul>
+           </section>
+           <section id ="climate">
+            <h2><i class ="fa-solid fa-sun"></i>Climate</h2>
+            <ul>
+                <li>Tropical climate all year round</li>
+                <li>Best time to visit:November to May (dry season), when the weather is sunny and the sea is calm.</li>
+                <li>June to October is rainy season, with occasional typhoons.</li>
+            </ul>
+           </section>
+
+           <section id ="food">
+            <h2><i class ="fa-solid fa-utensils"></i>Food</h2>
+            <h3>Popular Filipino Dishes</h3>
+
+            <div class ="food-gallery">
+
+                <div class="food-item">
+                    <img src ="src/adobo.jpg" alt="Adobo">
+                    <h4>Adobo</h4>
+                    <p>Chicken or pork braised in soy sauce, vinegar, and garlic — the classic Filipino favorite.</p>
+                </div>
+
+                <div class="food-item">
+                    <img src ="src/sinigang.jpg" alt="Sinigang">
+                    <h4>Sinigang</h4>
+                    <p>A tangy tamarind soup with vegetables and your choice of meat or shrimp.</p>
+                </div>
+
+                 <div class="food-item">
+                        <img src ="src/lechon.jpg" alt="Lechon">
+                        <h4>Lechon</h4>
+                        <p>Roast pig, known for its crispy skin and tender meat, often served at celebrations.</p>
+                </div>
+
+                <div class="food-item">
+                        <img src ="src/halo-halo.jpg" alt="Halo-Halo">
+                        <h4>Halo-Halo</h4>
+                        <p>A refreshing dessert made with crushed ice, sweet beans, fruits, and topped with leche flan or ube.</p>
+                 </div> 
+            </div>
+             </section> 
+        <section id ="activities">
+            <h2><i class ="fa-solid fa-umbrella-beach"></i>Things To Do</h2>
+        <h3>Top Activities in Boracay</h3>
+        <div class ="food-gallery">
+            <div class ="food-item">
+                <img src ="src/boracay1.jpg" alt ="Beach Walk">
+                <h4>Walk Along the Beach</h4>
+                <p>Take a relaxing walk on the soft sand while enjoying ocean views and local shops.</p>
+            </div>
+        <div class ="food-item">
+            <img src ="src/boracay2.jpg" alt ="Sunset">
+                <h4>Watch the Sunset</h4>
+                <p>Experience the breathtaking colors as the sun sets over the horizon.</p>
+        </div>
+        <div class ="food-item">
+            <img src ="src/dive.jpg" alt ="Water Activities">
+            <h4>Water Activities</h4>
+            <p>Enjoy a variety of water sports, including snorkeling, scuba diving, and paddleboarding.</p>
+        </div>
+        <div class="food-item">
+            <img src="src/get.jpg" alt="Nightlife">
+            <h4>Enjoy night life</h4>
+            <p>Dance, dine and relax in the beachside bars and restaurants after the sunset.</p>
+        </div>
+        </div>
+        </section>
+
+        <section id ="stay">
+            <h2><i class ="fa-solid fa-hotel"></i>Where to Stay</h2>
+            <p>Here are some recommended hotels in Boracay:</p>
+
+            <div class ="food-gallery">
+                <div class ="food-item">
+                    <img src ="src/ferra.jpg" alt ="Ferra Hotel and Garden Suites">
+                    <h4>Ferra Hotel and Garden Suites</h4>
+                    <a class="hotel-link" href="https://www.booking.com/hotel/ph/ferra-and-garden-suites.html" target="_blank">Book here </a>
+                    <p>Mid-level hotel with a rooftop pool- rooms around 80 dollars per night.</p>
+                </div>
+                <div class ="food-item">
+                    <img src ="src/coast.jpg" alt="Coast Hotel">
+                    <h4>Coast</h4>
+                    <a class="hotel-link" href="https://www.booking.com/hotel/ph/coast.html" target="_blank">Book here </a>
+                    <p>Pet- friendly hotel located on Station 2, beachside with rooms around 140 dollars per night.</p>
+
+                </div>
+            <div class ="food-item">
+                <img src ="src/surside.jpg" alt ="Surside Boracay Resort">
+                <h4>Surfside Boracay Resort</h4>
+                <a class="hotel-link" href="https://www.booking.com/hotel/ph/surfside-boracay-resort-and-spa.html" target="_blank">Book here </a>
+                <p>Budget-friendly with spa services and peaceful location, 65 dollars per night.</p>
+                </div>
+            <div class ="food-item">
+                <img src="src/shari.jpg" alt="Shangri-La Boracay">
+                 <h4>Shangri-La Boracay</h4>
+                 <a class="hotel-link" href="https://www.booking.com/hotel/ph/shangri-la-s-boracay-resort-and-spa.html" target="_blank">Book here </a>
+                <p>Luxury resort offering a private beachfront experience, rooms start at 450 dollars per night.</p>
+                </div>
+                </div>
+        </section>
+
+    </main>
+</body>
+</html>
